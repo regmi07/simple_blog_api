@@ -1,13 +1,18 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
 require("dotenv").config();
 
 const postRoutes = require("./routes/blogRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 app.use(express.json());
+app.use(cors());
+app.use(cookieParser());
 
 mongoose
   .connect(process.env.MOGO_URL, {
@@ -20,6 +25,7 @@ mongoose
   });
 
 app.use("/blog", postRoutes);
+app.use("/auth", authRoutes);
 
 app.listen(process.env.APP_PORT, function () {
   console.log(`Server is listening on http:localhost:${process.env.APP_PORT}`);
